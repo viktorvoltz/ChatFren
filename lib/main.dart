@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_authentication/Screens/auth_screen.dart';
 import 'Screens/chat_screen.dart';
 
 void main() {
@@ -11,8 +12,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ChatFren',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: ChatScreen(),
+      theme: ThemeData(
+          primarySwatch: Colors.purple,
+          backgroundColor: Colors.teal,
+          buttonTheme: ButtonTheme.of(context).copyWith(
+            buttonColor: Colors.purple,
+            textTheme: ButtonTextTheme.primary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+          )),
+      home: AuthScreen(),
     );
   }
 }
