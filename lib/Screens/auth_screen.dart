@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login_authentication/widget/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -26,6 +27,13 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        await Firestore.instance
+            .collection('users')
+            .document(authResult.user.uid)
+            .setData({
+          'username': username,
+          'email': email,
+        });
       }
     } on PlatformException catch (err) {
       var message = 'An error occured, please check form';
