@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:login_authentication/widget/chats/messages.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
@@ -16,17 +17,16 @@ class ChatScreen extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       Icon(Icons.exit_to_app),
-                       SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Text('Logout'),
-                     
                     ],
                   ),
                 ),
                 value: 'Logout',
               ),
             ],
-            onChanged: (itemIdentifier){
-              if(itemIdentifier == 'Logout'){
+            onChanged: (itemIdentifier) {
+              if (itemIdentifier == 'Logout') {
                 FirebaseAuth.instance.signOut();
               }
             },
@@ -37,28 +37,17 @@ class ChatScreen extends StatelessWidget {
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: Firestore.instance
-            .collection('chats/R9YAjGREK2mflPEHHDB6/messages')
-            .snapshots(),
-        builder: (ctx, streamSnapShot) {
-          if (streamSnapShot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final documents = streamSnapShot.data.documents;
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (ctx, index) => Container(
-              padding: EdgeInsets.all(10),
-              child: Text(documents[index]['text']),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Messages(),
             ),
-          );
-        },
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.double_arrow_sharp),
         onPressed: () {
           Firestore.instance
               .collection('chats/R9YAjGREK2mflPEHHDB6/messages')
