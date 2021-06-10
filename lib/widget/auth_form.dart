@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:login_authentication/widget/pickers/user_image_picker.dart';
+
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFn, this.isLoading);
 
   final bool isLoading;
-  final void Function(
-    String email,
-    String password,
-    String username,
-    bool isLogin,
-    BuildContext ctx
-  ) submitFn;
+  final void Function(String email, String password, String username,
+      bool isLogin, BuildContext ctx) submitFn;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -23,18 +20,15 @@ class _AuthFormState extends State<AuthForm> {
   var _userName = '';
   var _userPassword = '';
 
+  
+
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
       _formKey.currentState.save();
-      widget.submitFn(
-        _userEmail.trim(),
-        _userName.trim(),
-        _userPassword.trim(),
-        _isLogin,
-        context
-      );
+      widget.submitFn(_userEmail.trim(), _userName.trim(), _userPassword.trim(),
+          _isLogin, context);
     }
   }
 
@@ -51,6 +45,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  UserImagePicker(),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {
@@ -94,23 +89,23 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   SizedBox(height: 12),
-                  if(widget.isLoading)
-                  CircularProgressIndicator(),
-                  if(!widget.isLoading)
-                  RaisedButton(
-                    child: Text(_isLogin ? 'Login' : 'Sign Up'),
-                    onPressed: _trySubmit,
-                  ),
-                  if(!widget.isLoading)
-                  FlatButton(
-                    child: Text(
-                        _isLogin ? 'Create new account' : 'I have an account'),
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                  ),
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    RaisedButton(
+                      child: Text(_isLogin ? 'Login' : 'Sign Up'),
+                      onPressed: _trySubmit,
+                    ),
+                  if (!widget.isLoading)
+                    FlatButton(
+                      child: Text(_isLogin
+                          ? 'Create new account'
+                          : 'I have an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                    ),
                 ],
               ),
             ),
