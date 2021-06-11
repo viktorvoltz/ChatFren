@@ -28,6 +28,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
       children: [
         CircleAvatar(
           radius: 30,
+          backgroundColor: Colors.grey,
           backgroundImage: _image == null ? null : FileImage(_image),
         ),
         FlatButton.icon(
