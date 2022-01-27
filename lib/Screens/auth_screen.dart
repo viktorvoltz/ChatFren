@@ -16,14 +16,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   var _isLoading = false;
 
-  void _submitAuthForm(
-    String email,
-    String username,
-    String password,
-    File image,
-    bool isLogin,
-    BuildContext ctx,
-  ) async {
+  void _submitAuthForm(String email, String username, String password,
+      File image, bool isLogin, BuildContext ctx) async {
     AuthResult authResult;
     try {
       setState(() {
@@ -40,11 +34,14 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
-        final ref = FirebaseStorage.instance.ref().child('user_image').child(authResult.user.uid + '.jpg');
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child(authResult.user.uid + '.jpg');
 
         await ref.putFile(image).onComplete;
 
-      final url = await ref.getDownloadURL();
+        final url = await ref.getDownloadURL();
 
         await Firestore.instance
             .collection('users')
